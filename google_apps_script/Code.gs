@@ -6,49 +6,59 @@
     const ACTIVITIES_SHEET = 'Activities';
     const SYSTEM_STATS_SHEET = 'System_Stats';
 
-    // Main entry point for GET requests
-    function doGet(e) {
-    const path = e.parameter.path || '';
-    const action = e.parameter.action || '';
-    
-    try {
-        switch (path) {
-        case 'items':
-            return handleItemsRequest(e, action);
-        case 'stats':
-            return handleStatsRequest();
-        case 'activities':
-            return handleActivitiesRequest();
-        case 'racks':
-            return handleRacksRequest();
-        case 'search':
-            return handleSearchRequest(e);
-        default:
-            return createResponse({ error: 'Invalid endpoint' }, 404);
-        }
-    } catch (error) {
-        return createResponse({ error: error.toString() }, 500);
+// Main entry point for GET requests
+function doGet(e) {
+  // Handle case where e is undefined
+  if (!e) {
+    e = { parameter: {} };
+  }
+  
+  const path = e.parameter.path || '';
+  const action = e.parameter.action || '';
+  
+  try {
+    switch (path) {
+      case 'items':
+        return handleItemsRequest(e, action);
+      case 'stats':
+        return handleStatsRequest();
+      case 'activities':
+        return handleActivitiesRequest();
+      case 'racks':
+        return handleRacksRequest();
+      case 'search':
+        return handleSearchRequest(e);
+      default:
+        return createResponse({ error: 'Invalid endpoint. Available endpoints: items, stats, activities, racks, search' }, 404);
     }
-    }
+  } catch (error) {
+    return createResponse({ error: error.toString() }, 500);
+  }
+}
 
-    // Main entry point for POST requests
-    function doPost(e) {
-    const path = e.parameter.path || '';
-    const action = e.parameter.action || '';
-    
-    try {
-        switch (path) {
-        case 'items':
-            return handleItemsRequest(e, action);
-        case 'search':
-            return handleSearchRequest(e);
-        default:
-            return createResponse({ error: 'Invalid endpoint' }, 404);
-        }
-    } catch (error) {
-        return createResponse({ error: error.toString() }, 500);
+// Main entry point for POST requests
+function doPost(e) {
+  // Handle case where e is undefined
+  if (!e) {
+    e = { parameter: {} };
+  }
+  
+  const path = e.parameter.path || '';
+  const action = e.parameter.action || '';
+  
+  try {
+    switch (path) {
+      case 'items':
+        return handleItemsRequest(e, action);
+      case 'search':
+        return handleSearchRequest(e);
+      default:
+        return createResponse({ error: 'Invalid endpoint. Available endpoints: items, search' }, 404);
     }
-    }
+  } catch (error) {
+    return createResponse({ error: error.toString() }, 500);
+  }
+}
 
     // Handle items-related requests
     function handleItemsRequest(e, action) {
@@ -281,34 +291,47 @@
     }
     }
 
-    // Handle search requests
-    function handleSearchRequest(e) {
-    try {
-        const query = e.parameter.query || JSON.parse(e.postData.contents).query;
-        const sheet = getSheet(ITEMS_SHEET);
-        const data = sheet.getDataRange().getValues();
-        const headers = data[0];
-        const results = [];
-        
-        for (let i = 1; i < data.length; i++) {
-        const row = data[i];
-        const item = {};
-        headers.forEach((header, index) => {
-            item[header] = row[index];
-        });
-        
-        // Search in name, manufacturer, barcode, and category
-        const searchText = `${item.Name} ${item.Manufacturer} ${item.Barcode} ${item.Category}`.toLowerCase();
-        if (searchText.includes(query.toLowerCase())) {
-            results.push(item);
-        }
-        }
-        
-        return createResponse(results);
-    } catch (error) {
-        return createResponse({ error: error.toString() }, 500);
+// Handle search requests
+function handleSearchRequest(e) {
+  try {
+    let query = '';
+    
+    // Try to get query from different sources
+    if (e.parameter && e.parameter.query) {
+      query = e.parameter.query;
+    } else if (e.postData && e.postData.contents) {
+      const postData = JSON.parse(e.postData.contents);
+      query = postData.query || '';
     }
+    
+    if (!query) {
+      return createResponse({ error: 'Query parameter is required' }, 400);
     }
+    
+    const sheet = getSheet(ITEMS_SHEET);
+    const data = sheet.getDataRange().getValues();
+    const headers = data[0];
+    const results = [];
+    
+    for (let i = 1; i < data.length; i++) {
+      const row = data[i];
+      const item = {};
+      headers.forEach((header, index) => {
+        item[header] = row[index];
+      });
+      
+      // Search in name, manufacturer, barcode, and category
+      const searchText = `${item.Name} ${item.Manufacturer} ${item.Barcode} ${item.Category}`.toLowerCase();
+      if (searchText.includes(query.toLowerCase())) {
+        results.push(item);
+      }
+    }
+    
+    return createResponse(results);
+  } catch (error) {
+    return createResponse({ error: error.toString() }, 500);
+  }
+}
 
     // Helper function to get sheet
     function getSheet(sheetName) {
@@ -368,8 +391,32 @@
         .setMimeType(ContentService.MimeType.JSON);
     }
 
-    // Initialize demo data
-    function initializeDemoData() {
+// Test function to verify setup
+function testSetup() {
+  try {
+    // Test if we can access the spreadsheet
+    const spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
+    const sheetNames = spreadsheet.getSheets().map(sheet => sheet.getName());
+    
+    return {
+      success: true,
+      message: 'Setup test successful',
+      spreadsheetId: SPREADSHEET_ID,
+      availableSheets: sheetNames,
+      timestamp: new Date().toISOString()
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error.toString(),
+      message: 'Setup test failed. Please check your SPREADSHEET_ID',
+      timestamp: new Date().toISOString()
+    };
+  }
+}
+
+// Initialize demo data
+function initializeDemoData() {
     const demoItems = [
         // Electronics
         ['1', 'iPhone 15 Pro Max', 'Apple', 'APPLE001234567', 'L', 0.24, '2025-01-15', '2027-01-15', 'A', 'R1', 1, 'stored', 'Electronics'],
