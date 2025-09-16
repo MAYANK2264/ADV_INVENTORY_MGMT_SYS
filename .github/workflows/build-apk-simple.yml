@@ -35,6 +35,11 @@ jobs:
       run: |
         flutter config --no-enable-web
         flutter config --enable-android
+      
+    - name: Configure Flutter for Android only
+      run: |
+        flutter config --no-enable-web
+        flutter config --enable-android
     
     # Skip tests as they're failing
     # - name: Run tests
@@ -43,7 +48,7 @@ jobs:
     - name: Build APK (Release)
       run: |
         flutter config --enable-android
-        flutter build apk --release
+        flutter build apk --release --verbose
     
     - name: Upload Release APK
       uses: actions/upload-artifact@v4
