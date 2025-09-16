@@ -46,7 +46,9 @@ class ItemsProvider with ChangeNotifier {
     notifyListeners();
 
     // Load demo data immediately for demo purposes
+    print('Loading demo data...');
     _loadDemoData();
+    print('Demo data loaded: ${_items.length} items');
     _isLoading = false;
     notifyListeners();
     return;
