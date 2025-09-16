@@ -35,63 +35,68 @@ class WarehouseBlocksOverview extends StatelessWidget {
   Widget _buildBlockCard(String block, double occupancyPercentage) {
     return GlassmorphismContainer(
       width: 120,
-      height: 140,
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  padding: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Text(
-                    'Block $block',
-                    style: const TextStyle(
-                      color: AppColors.primary,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Text(
+                      'Block $block',
+                      style: const TextStyle(
+                        color: AppColors.primary,
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ),
+                const SizedBox(width: 4),
                 Icon(
                   Icons.warehouse_rounded,
                   color: Colors.white.withOpacity(0.6),
-                  size: 16,
+                  size: 14,
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 8),
             Text(
               '${occupancyPercentage.toStringAsFixed(0)}%',
               style: const TextStyle(
-                fontSize: 20,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 2),
             Text(
               'Occupied',
               style: TextStyle(
-                fontSize: 12,
+                fontSize: 11,
                 color: Colors.white.withOpacity(0.8),
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 6),
             _buildCapacityBar(occupancyPercentage),
-            const SizedBox(height: 8),
+            const SizedBox(height: 6),
             Text(
-              '${(AppConstants.racksPerBlock * AppConstants.slotsPerRack * occupancyPercentage / 100).round()} / ${AppConstants.racksPerBlock * AppConstants.slotsPerRack}',
+              '${(AppConstants.racksPerBlock * AppConstants.slotsPerRack * occupancyPercentage / 100).round()}/${AppConstants.racksPerBlock * AppConstants.slotsPerRack}',
               style: TextStyle(
-                fontSize: 10,
+                fontSize: 9,
                 color: Colors.white.withOpacity(0.6),
               ),
+              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),
@@ -148,7 +153,7 @@ class WarehouseBlocksOverview extends StatelessWidget {
   Widget _buildShimmerCard() {
     return Container(
       width: 120,
-      height: 140,
+      height: 120,
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.1),
         borderRadius: BorderRadius.circular(16),

@@ -37,6 +37,14 @@ class ActivitiesProvider with ChangeNotifier {
     _error = '';
     notifyListeners();
 
+    // Load demo data immediately for demo purposes
+    _loadDemoActivities();
+    _isLoading = false;
+    notifyListeners();
+    return;
+
+    // Original API logic (commented out for demo)
+    /*
     try {
       // Check if we should use cached data
       if (!forceRefresh && !await _storageService.isDataStale()) {
@@ -73,6 +81,7 @@ class ActivitiesProvider with ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
+    */
   }
 
   // Add new activity (for local tracking)

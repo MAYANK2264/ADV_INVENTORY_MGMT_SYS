@@ -26,6 +26,14 @@ class StatsProvider with ChangeNotifier {
     _error = '';
     notifyListeners();
 
+    // Load demo data immediately for demo purposes
+    _loadDemoStats();
+    _isLoading = false;
+    notifyListeners();
+    return;
+
+    // Original API logic (commented out for demo)
+    /*
     try {
       // Check if we should use cached data
       if (!forceRefresh && !await _storageService.isDataStale()) {
@@ -79,6 +87,7 @@ class StatsProvider with ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
+    */
   }
 
   // Get occupancy for specific block
