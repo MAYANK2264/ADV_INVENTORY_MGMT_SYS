@@ -42,7 +42,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.warehouse_inventory"
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 21 // Required for flutter_barcode_scanner
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -50,6 +50,12 @@ android {
 
     buildTypes {
         release {
+            signingConfig signingConfigs.debug // Using debug for GitHub Actions
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
             signingConfig signingConfigs.debug
         }
     }
