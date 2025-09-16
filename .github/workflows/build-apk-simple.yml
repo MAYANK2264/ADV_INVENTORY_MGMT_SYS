@@ -30,13 +30,20 @@ jobs:
     
     - name: Install dependencies
       run: flutter pub get
+      
+    - name: Configure Flutter for Android only
+      run: |
+        flutter config --no-enable-web
+        flutter config --enable-android
     
     # Skip tests as they're failing
     # - name: Run tests
     #   run: flutter test
       
     - name: Build APK (Release)
-      run: flutter build apk --release
+      run: |
+        flutter config --enable-android
+        flutter build apk --release
     
     - name: Upload Release APK
       uses: actions/upload-artifact@v4

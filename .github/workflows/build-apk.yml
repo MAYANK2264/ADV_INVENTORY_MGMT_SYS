@@ -40,6 +40,11 @@ jobs:
     
     - name: Install dependencies
       run: flutter pub get
+      
+    - name: Configure Flutter for Android only
+      run: |
+        flutter config --no-enable-web
+        flutter config --enable-android
     
     # Skip tests as they're failing
     # - name: Run tests
@@ -47,15 +52,21 @@ jobs:
     
     - name: Build APK (Debug)
       if: github.event.inputs.build_type == 'debug' || github.event.inputs.build_type == ''
-      run: flutter build apk --debug
+      run: |
+        flutter config --enable-android
+        flutter build apk --debug
     
     - name: Build APK (Release)
       if: github.event.inputs.build_type == 'release' || github.event.inputs.build_type == ''
-      run: flutter build apk --release
+      run: |
+        flutter config --enable-android
+        flutter build apk --release
     
     - name: Build Split APKs
       if: github.event.inputs.build_type == 'split' || github.event.inputs.build_type == ''
-      run: flutter build apk --split-per-abi
+      run: |
+        flutter config --enable-android
+        flutter build apk --split-per-abi
     
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
