@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Activity {
   final String id;
   final String text;

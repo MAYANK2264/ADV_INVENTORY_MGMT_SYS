@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'colors.dart';
 
@@ -10,11 +11,9 @@ class AppTheme {
         primary: AppColors.primary,
         secondary: AppColors.secondary,
         surface: AppColors.surface,
-        background: AppColors.background,
         onPrimary: Colors.white,
         onSecondary: Colors.white,
         onSurface: Colors.white,
-        onBackground: Colors.white,
       ),
       scaffoldBackgroundColor: AppColors.background,
       appBarTheme: const AppBarTheme(

@@ -173,14 +173,21 @@ class ActivityFeed extends StatelessWidget {
               size: 32,
             ),
             const SizedBox(height: 8),
-            Text(
+            const Text(
               'Failed to load activities',
-              style: Theme.of(context).textTheme.titleMedium,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
             ),
             const SizedBox(height: 4),
             Text(
               error,
-              style: Theme.of(context).textTheme.bodySmall,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+              ),
               textAlign: TextAlign.center,
             ),
           ],
@@ -201,14 +208,21 @@ class ActivityFeed extends StatelessWidget {
               size: 32,
             ),
             const SizedBox(height: 8),
-            Text(
+            const Text(
               'No recent activity',
-              style: Theme.of(context).textTheme.titleMedium,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
             ),
             const SizedBox(height: 4),
-            Text(
+            const Text(
               'Activities will appear here as they happen',
-              style: Theme.of(context).textTheme.bodySmall,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+              ),
               textAlign: TextAlign.center,
             ),
           ],

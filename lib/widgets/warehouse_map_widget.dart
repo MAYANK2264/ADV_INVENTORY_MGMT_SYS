@@ -34,10 +34,6 @@ class WarehouseMapWidget extends StatelessWidget {
   }
 
   Widget _buildBlockSection(String block, ItemsProvider itemsProvider, StatsProvider statsProvider) {
-    final blockItems = itemsProvider.getItemsByLocation(block, '', 0)
-        .where((item) => item.locationBlock == block)
-        .toList();
-
     return GlassmorphismContainer(
       child: Padding(
         padding: const EdgeInsets.all(16),

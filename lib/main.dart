@@ -7,6 +7,7 @@ import 'screens/dashboard_screen.dart';
 import 'screens/warehouse_map_screen.dart';
 import 'screens/items_screen.dart';
 import 'utils/theme.dart';
+import 'utils/colors.dart';
 
 void main() {
   runApp(const WarehouseInventoryApp());
