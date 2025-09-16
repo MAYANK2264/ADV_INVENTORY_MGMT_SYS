@@ -66,7 +66,8 @@ class ActivitiesProvider with ChangeNotifier {
           _activities = cachedActivities;
         }
       } catch (cacheError) {
-        // Cache also failed, keep the error
+        // Cache also failed, load demo data
+        _loadDemoActivities();
       }
     } finally {
       _isLoading = false;
@@ -81,6 +82,68 @@ class ActivitiesProvider with ChangeNotifier {
     
     // Save to cache
     _storageService.saveActivities(_activities);
+  }
+
+  // Load demo activities when API is not available
+  void _loadDemoActivities() {
+    _activities = [
+      Activity(
+        id: '1',
+        text: 'iPhone 15 Pro Max moved to Block A, Rack R1, Slot 1',
+        time: '2 minutes ago',
+        type: 'move',
+        timestamp: DateTime.now().subtract(const Duration(minutes: 2)),
+      ),
+      Activity(
+        id: '2',
+        text: 'Hydraulic Pump Unit processed for dispatch',
+        time: '5 minutes ago',
+        type: 'dispatch',
+        timestamp: DateTime.now().subtract(const Duration(minutes: 5)),
+      ),
+      Activity(
+        id: '3',
+        text: 'New electronics shipment arrived - 15 items',
+        time: '12 minutes ago',
+        type: 'arrival',
+        timestamp: DateTime.now().subtract(const Duration(minutes: 12)),
+      ),
+      Activity(
+        id: '4',
+        text: 'System maintenance completed - All systems operational',
+        time: '1 hour ago',
+        type: 'system',
+        timestamp: DateTime.now().subtract(const Duration(hours: 1)),
+      ),
+      Activity(
+        id: '5',
+        text: 'Medical supplies inventory updated',
+        time: '2 hours ago',
+        type: 'inventory',
+        timestamp: DateTime.now().subtract(const Duration(hours: 2)),
+      ),
+      Activity(
+        id: '6',
+        text: 'Samsung Galaxy S24 added to inventory',
+        time: '3 hours ago',
+        type: 'arrival',
+        timestamp: DateTime.now().subtract(const Duration(hours: 3)),
+      ),
+      Activity(
+        id: '7',
+        text: 'MacBook Pro 16" quality check completed',
+        time: '4 hours ago',
+        type: 'inventory',
+        timestamp: DateTime.now().subtract(const Duration(hours: 4)),
+      ),
+      Activity(
+        id: '8',
+        text: 'Industrial equipment batch processed',
+        time: '5 hours ago',
+        type: 'dispatch',
+        timestamp: DateTime.now().subtract(const Duration(hours: 5)),
+      ),
+    ];
   }
 
   // Clear error

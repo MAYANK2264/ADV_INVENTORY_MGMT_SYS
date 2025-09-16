@@ -72,7 +72,8 @@ class StatsProvider with ChangeNotifier {
           _rackOccupancy = cachedOccupancy;
         }
       } catch (cacheError) {
-        // Cache also failed, keep the error
+        // Cache also failed, load demo data
+        _loadDemoStats();
       }
     } finally {
       _isLoading = false;
@@ -125,6 +126,213 @@ class StatsProvider with ChangeNotifier {
     
     final occupiedSlots = slots.values.where((occupied) => occupied == true).length;
     return (occupiedSlots / slots.length) * 100;
+  }
+
+  // Load demo stats when API is not available
+  void _loadDemoStats() {
+    _stats = SystemStats(
+      capacity: 120,
+      itemsProcessed: 25,
+      uptime: '99.9%',
+      totalItems: 25,
+      availableSlots: 95,
+      occupiedSlots: 25,
+      lastUpdated: DateTime.now(),
+    );
+
+    // Generate demo rack occupancy data
+    _rackOccupancy = {
+      'A': {
+        'R1': {
+          'slots': {
+            '1': true,  // iPhone 15 Pro Max
+            '2': true,  // Samsung Galaxy S24
+            '3': false,
+            '4': false,
+            '5': false,
+            '6': false,
+            '7': false,
+            '8': false,
+          }
+        },
+        'R2': {
+          'slots': {
+            '1': true,  // MacBook Pro 16"
+            '2': true,  // Dell XPS 15
+            '3': false,
+            '4': false,
+            '5': false,
+            '6': false,
+            '7': false,
+            '8': false,
+          }
+        },
+        'R3': {
+          'slots': {
+            '1': true,  // AirPods Pro
+            '2': false,
+            '3': false,
+            '4': false,
+            '5': false,
+            '6': false,
+            '7': false,
+            '8': false,
+          }
+        }
+      },
+      'B': {
+        'R1': {
+          'slots': {
+            '1': true,  // Hydraulic Pump Unit
+            '2': true,  // Steel Bearing Set
+            '3': false,
+            '4': false,
+            '5': false,
+            '6': false,
+            '7': false,
+            '8': false,
+          }
+        },
+        'R2': {
+          'slots': {
+            '1': true,  // Industrial Sensor
+            '2': true,  // Control Valve
+            '3': false,
+            '4': false,
+            '5': false,
+            '6': false,
+            '7': false,
+            '8': false,
+          }
+        },
+        'R3': {
+          'slots': {
+            '1': true,  // Motor Assembly
+            '2': false,
+            '3': false,
+            '4': false,
+            '5': false,
+            '6': false,
+            '7': false,
+            '8': false,
+          }
+        }
+      },
+      'C': {
+        'R1': {
+          'slots': {
+            '1': true,  // Brake Pad Set
+            '2': true,  // Oil Filter
+            '3': false,
+            '4': false,
+            '5': false,
+            '6': false,
+            '7': false,
+            '8': false,
+          }
+        },
+        'R2': {
+          'slots': {
+            '1': true,  // Spark Plug Set
+            '2': true,  // Timing Belt
+            '3': false,
+            '4': false,
+            '5': false,
+            '6': false,
+            '7': false,
+            '8': false,
+          }
+        },
+        'R3': {
+          'slots': {
+            '1': true,  // Air Filter
+            '2': false,
+            '3': false,
+            '4': false,
+            '5': false,
+            '6': false,
+            '7': false,
+            '8': false,
+          }
+        }
+      },
+      'D': {
+        'R1': {
+          'slots': {
+            '1': true,  // Surgical Gloves
+            '2': true,  // Bandage Roll
+            '3': false,
+            '4': false,
+            '5': false,
+            '6': false,
+            '7': false,
+            '8': false,
+          }
+        },
+        'R2': {
+          'slots': {
+            '1': true,  // Thermometer Digital
+            '2': true,  // Syringe 10ml
+            '3': false,
+            '4': false,
+            '5': false,
+            '6': false,
+            '7': false,
+            '8': false,
+          }
+        },
+        'R3': {
+          'slots': {
+            '1': true,  // Face Mask
+            '2': false,
+            '3': false,
+            '4': false,
+            '5': false,
+            '6': false,
+            '7': false,
+            '8': false,
+          }
+        }
+      },
+      'E': {
+        'R1': {
+          'slots': {
+            '1': true,  // Energy Drink
+            '2': true,  // Protein Bar
+            '3': false,
+            '4': false,
+            '5': false,
+            '6': false,
+            '7': false,
+            '8': false,
+          }
+        },
+        'R2': {
+          'slots': {
+            '1': true,  // Coffee Beans
+            '2': true,  // Water Bottle
+            '3': false,
+            '4': false,
+            '5': false,
+            '6': false,
+            '7': false,
+            '8': false,
+          }
+        },
+        'R3': {
+          'slots': {
+            '1': true,  // Snack Mix
+            '2': false,
+            '3': false,
+            '4': false,
+            '5': false,
+            '6': false,
+            '7': false,
+            '8': false,
+          }
+        }
+      }
+    };
   }
 
   // Clear error
