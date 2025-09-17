@@ -27,6 +27,7 @@ jobs:
       with:
         flutter-version: '3.24.5'
         channel: 'stable'
+        cache: true
     
     - name: Install dependencies
       run: flutter pub get
@@ -36,9 +37,9 @@ jobs:
         flutter config --no-enable-web
         flutter config --enable-android
     
-    # Skip tests as they're failing
-    # - name: Run tests
-    #   run: flutter test
+    - name: Run tests
+      run: flutter test
+      continue-on-error: true
       
     - name: Build APK (Release)
       run: |
