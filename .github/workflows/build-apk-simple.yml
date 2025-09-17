@@ -35,11 +35,6 @@ jobs:
       run: |
         flutter config --no-enable-web
         flutter config --enable-android
-      
-    - name: Configure Flutter for Android only
-      run: |
-        flutter config --no-enable-web
-        flutter config --enable-android
     
     # Skip tests as they're failing
     # - name: Run tests
