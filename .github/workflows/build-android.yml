@@ -44,21 +44,19 @@ jobs:
       run: flutter test
       continue-on-error: true
     
+    - name: Clean build directory
+      run: flutter clean
+    
     - name: Build Debug APK
       run: |
         flutter build apk --debug --verbose
         mkdir -p build/app/outputs/flutter-apk/
         find build/ -name "*.apk" -type f -exec cp {} build/app/outputs/flutter-apk/ \;
+      continue-on-error: false
     
-    - name: Build Release APK
-      run: |
-        flutter build apk --release --verbose
-        mkdir -p build/app/outputs/flutter-apk/
-        find build/ -name "*.apk" -type f -exec cp {} build/app/outputs/flutter-apk/ \;
-    
-    - name: List APK files
+    - name: List Debug APK files
       run: find build/ -name "*.apk" -type f
-    
+      
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
       if: always()
@@ -67,6 +65,19 @@ jobs:
         path: build/app/outputs/flutter-apk/*.apk
         retention-days: 7
       continue-on-error: true
+    
+    - name: Clean build directory for release
+      run: flutter clean
+    
+    - name: Build Release APK
+      run: |
+        flutter build apk --release --verbose
+        mkdir -p build/app/outputs/flutter-apk/
+        find build/ -name "*.apk" -type f -exec cp {} build/app/outputs/flutter-apk/ \;
+      continue-on-error: false
+    
+    - name: List Release APK files
+      run: find build/ -name "*.apk" -type f
     
     - name: Upload Release APK
       uses: actions/upload-artifact@v4

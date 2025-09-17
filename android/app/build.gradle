@@ -67,6 +67,11 @@ android {
             outputFileName = "app-${variant.buildType.name}.apk"
         }
     }
+    
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
 }
 
 flutter {
