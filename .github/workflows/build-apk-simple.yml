@@ -42,7 +42,6 @@ jobs:
       
     - name: Build APK (Release)
       run: |
-        flutter config --enable-android
         flutter build apk --release --verbose
     
     - name: Upload Release APK

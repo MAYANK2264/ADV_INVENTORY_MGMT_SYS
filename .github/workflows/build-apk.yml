@@ -53,19 +53,16 @@ jobs:
     - name: Build APK (Debug)
       if: github.event.inputs.build_type == 'debug' || github.event.inputs.build_type == ''
       run: |
-        flutter config --enable-android
         flutter build apk --debug --verbose
     
     - name: Build APK (Release)
       if: github.event.inputs.build_type == 'release' || github.event.inputs.build_type == ''
       run: |
-        flutter config --enable-android
         flutter build apk --release --verbose
     
     - name: Build Split APKs
       if: github.event.inputs.build_type == 'split' || github.event.inputs.build_type == ''
       run: |
-        flutter config --enable-android
         flutter build apk --split-per-abi --verbose
     
     - name: Upload Debug APK
