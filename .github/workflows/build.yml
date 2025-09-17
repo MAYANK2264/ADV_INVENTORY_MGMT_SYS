@@ -1,4 +1,4 @@
-name: Build and Release APK
+name: Build Debug APK
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Build & Release
+    name: Build Debug APK
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -25,17 +25,14 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Upgrade dependencies
-        run: flutter pub upgrade
-
       - name: Get dependencies
         run: flutter pub get
 
-      - name: Build APK
-        run: flutter build apk --release
+      - name: Build debug APK
+        run: flutter build apk --debug
 
       - name: Upload APK as Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-release
-          path: build/app/outputs/flutter-apk/app-release.apk
+          name: app-debug
+          path: build/app/outputs/flutter-apk/app-debug.apk
