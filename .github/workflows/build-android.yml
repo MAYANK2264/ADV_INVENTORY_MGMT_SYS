@@ -22,12 +22,12 @@ jobs:
       uses: actions/setup-java@v4
       with:
         distribution: 'zulu'
-        java-version: '17'
+        java-version: '11'
     
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.19.3'
+        flutter-version: '3.16.9'
         channel: 'stable'
         cache: true
     
@@ -49,9 +49,8 @@ jobs:
     
     - name: Build Debug APK
       run: |
-        flutter build apk --debug --verbose
-        mkdir -p build/app/outputs/flutter-apk/
-        find build/ -name "*.apk" -type f -exec cp {} build/app/outputs/flutter-apk/ \;
+        flutter build apk --debug
+        ls -la build/app/outputs/flutter-apk/
       continue-on-error: false
     
     - name: List Debug APK files
@@ -71,9 +70,8 @@ jobs:
     
     - name: Build Release APK
       run: |
-        flutter build apk --release --verbose
-        mkdir -p build/app/outputs/flutter-apk/
-        find build/ -name "*.apk" -type f -exec cp {} build/app/outputs/flutter-apk/ \;
+        flutter build apk --release
+        ls -la build/app/outputs/flutter-apk/
       continue-on-error: false
     
     - name: List Release APK files
