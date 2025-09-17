@@ -60,6 +60,13 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+    
+    // Ensure APKs are generated in the expected location
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "app-${variant.buildType.name}.apk"
+        }
+    }
 }
 
 flutter {

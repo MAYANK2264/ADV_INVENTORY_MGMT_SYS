@@ -22,7 +22,7 @@ jobs:
       uses: actions/setup-java@v4
       with:
         distribution: 'zulu'
-        java-version: '11'
+        java-version: '17'
     
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
@@ -34,32 +34,45 @@ jobs:
     - name: Install dependencies
       run: flutter pub get
       
-    - name: Configure Flutter for Android
-      run: flutter config --no-enable-web
+    - name: Show Flutter and Java versions
+      run: |
+        flutter --version
+        java -version
+        echo $JAVA_HOME
     
     - name: Run tests
       run: flutter test
       continue-on-error: true
     
     - name: Build Debug APK
-      run: flutter build apk --debug
-      continue-on-error: true
+      run: |
+        flutter build apk --debug --verbose
+        mkdir -p build/app/outputs/flutter-apk/
+        find build/ -name "*.apk" -type f -exec cp {} build/app/outputs/flutter-apk/ \;
     
     - name: Build Release APK
-      run: flutter build apk --release
+      run: |
+        flutter build apk --release --verbose
+        mkdir -p build/app/outputs/flutter-apk/
+        find build/ -name "*.apk" -type f -exec cp {} build/app/outputs/flutter-apk/ \;
+    
+    - name: List APK files
+      run: find build/ -name "*.apk" -type f
     
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
-      if: success() || failure()
+      if: always()
       with:
         name: warehouse-inventory-debug
-        path: build/app/outputs/flutter-apk/app-debug.apk
+        path: build/app/outputs/flutter-apk/*.apk
         retention-days: 7
       continue-on-error: true
     
     - name: Upload Release APK
       uses: actions/upload-artifact@v4
+      if: always()
       with:
         name: warehouse-inventory-release
-        path: build/app/outputs/flutter-apk/app-release.apk
+        path: build/app/outputs/flutter-apk/*.apk
         retention-days: 7
+      continue-on-error: true
