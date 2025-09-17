@@ -51,9 +51,10 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.debug // Using debug for GitHub Actions
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled false
+            shrinkResources false
+            // Disabled minification and shrinking to fix build issues
+            // proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
             signingConfig signingConfigs.debug
