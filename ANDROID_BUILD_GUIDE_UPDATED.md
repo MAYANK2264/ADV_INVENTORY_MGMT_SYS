@@ -18,6 +18,9 @@ The project uses a GitHub Actions workflow (`build-android.yml`) to automaticall
 3. **Enhanced Artifact Upload**: Using wildcard paths and `always()` condition to ensure artifacts are uploaded even if some steps fail
 4. **Verbose Build Output**: Added verbose flag to Flutter build commands for better debugging
 5. **Diagnostic Steps**: Added steps to show Flutter/Java versions and list APK files
+6. **Clean Build Steps**: Added `flutter clean` before each build to prevent conflicts
+7. **Disabled Lint Errors**: Configured Gradle to ignore lint errors that might fail the build
+8. **Separate Build Steps**: Separated debug and release builds with individual clean steps
 
 ## Troubleshooting Common Issues
 
@@ -26,8 +29,9 @@ The project uses a GitHub Actions workflow (`build-android.yml`) to automaticall
 If the workflow fails with "No files were found" errors:
 
 1. **Check the build logs**: Look for specific error messages in the "Build Debug APK" and "Build Release APK" steps
-2. **Verify APK location**: The "List APK files" step shows where APKs are being generated
+2. **Verify APK location**: The "List Debug APK files" and "List Release APK files" steps show where APKs are being generated
 3. **Java version issues**: Ensure the workflow is using Java 17 as specified
+4. **Clean build directory**: The workflow now includes `flutter clean` before each build to prevent conflicts
 
 ### Build Failures
 
@@ -36,6 +40,16 @@ If the APK build fails:
 1. **Check for compilation errors**: Look for specific error messages in the build logs
 2. **Dependency issues**: Ensure all dependencies in `pubspec.yaml` are compatible
 3. **Android configuration**: Verify the Android configuration in `android/app/build.gradle`
+4. **Lint errors**: The build.gradle now includes `lintOptions { abortOnError false }` to prevent lint errors from failing the build
+5. **Java HOME issues**: If you see "JAVA_HOME is set to an invalid directory" errors, ensure your local environment has Java 17 installed and properly configured
+
+### Using the Local Build Script
+
+A new batch script has been added to help with local builds:
+
+1. Run `scripts/build_android.bat` from the project root
+2. The script will clean, install dependencies, run tests, and build both debug and release APKs
+3. It will also list all generated APK files at the end
 
 ## Manual Building
 
@@ -46,11 +60,17 @@ To build the APK manually:
 3. Run the following commands:
 
 ```bash
+# Clean previous builds
+flutter clean
+
 # Get dependencies
 flutter pub get
 
 # Build debug APK
 flutter build apk --debug
+
+# Clean again before release build
+flutter clean
 
 # Build release APK
 flutter build apk --release
@@ -59,6 +79,9 @@ flutter build apk --release
 4. The APKs will be located in:
    - Debug: `build/app/outputs/flutter-apk/app-debug.apk`
    - Release: `build/app/outputs/flutter-apk/app-release.apk`
+
+5. Alternatively, use the provided script:
+   - Windows: `scripts/build_android.bat`
 
 ## Installing the APK
 
