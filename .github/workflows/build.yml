@@ -25,6 +25,9 @@ jobs:
         with:
           channel: 'stable'
 
+      - name: Upgrade dependencies
+        run: flutter pub upgrade
+
       - name: Get dependencies
         run: flutter pub get
 
