@@ -1,0 +1,65 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: '11'
+    
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.19.3'
+        channel: 'stable'
+        cache: true
+    
+    - name: Install dependencies
+      run: flutter pub get
+      
+    - name: Configure Flutter for Android
+      run: flutter config --no-enable-web
+    
+    - name: Run tests
+      run: flutter test
+      continue-on-error: true
+    
+    - name: Build Debug APK
+      run: flutter build apk --debug
+      continue-on-error: true
+    
+    - name: Build Release APK
+      run: flutter build apk --release
+    
+    - name: Upload Debug APK
+      uses: actions/upload-artifact@v4
+      if: success() || failure()
+      with:
+        name: warehouse-inventory-debug
+        path: build/app/outputs/flutter-apk/app-debug.apk
+        retention-days: 7
+      continue-on-error: true
+    
+    - name: Upload Release APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: warehouse-inventory-release
+        path: build/app/outputs/flutter-apk/app-release.apk
+        retention-days: 7
