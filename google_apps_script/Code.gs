@@ -7,25 +7,30 @@
       const SYSTEM_STATS_SHEET = 'System_Stats';
 
   // Main entry point for GET requests
-  function doGet(e) {
-    // Handle case where e is undefined
-    if (!e) {
-      e = { parameter: {} };
-    }
-    
-    // Get the full path from the URL parameter
-    const fullPath = e.parameter.path || '';
-    
-    // Extract the endpoint from paths like /api/items, /api/stats, etc.
-    let path = fullPath;
-    if (fullPath.startsWith('/api/')) {
-      path = fullPath.substring(5); // Remove '/api/' prefix
-    }
-    
-    // Debug logging
-    console.log('Full path:', fullPath);
-    console.log('Extracted path:', path);
-    console.log('All parameters:', e.parameter);
+function doGet(e) {
+  // Handle case where e is undefined
+  if (!e) {
+    e = { parameter: {} };
+  }
+  
+  // Get the full path from the URL parameter
+  const fullPath = e.parameter.path || '';
+  
+  // Extract the endpoint from paths like /api/items, /api/stats, etc.
+  let path = fullPath;
+  if (fullPath.startsWith('/api/')) {
+    path = fullPath.substring(5); // Remove '/api/' prefix
+  }
+  
+  // Handle direct access without path parameter
+  if (!path && !fullPath) {
+    path = 'test'; // Default to test endpoint
+  }
+  
+  // Debug logging
+  console.log('Full path:', fullPath);
+  console.log('Extracted path:', path);
+  console.log('All parameters:', e.parameter);
     
     const action = e.parameter.action || '';
     

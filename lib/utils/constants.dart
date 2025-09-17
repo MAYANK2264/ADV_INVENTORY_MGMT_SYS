@@ -1,6 +1,6 @@
 class AppConstants {
   // API Configuration
-  static const String baseUrl = 'https://script.google.com/macros/s/AKfycbx5ljUANdXr5jIwZXUofiGxg8Yt10W0VEYTbCV8sxH_l0nOx3UvnqHMl7Dwbgh9GOiP/exec';
+  static const String baseUrl = 'https://script.googleusercontent.com/a/macros/iiitsurat.ac.in/echo?user_content_key=AehSKLgL7TBfz-crZPi9jK4mSVGJ6lbk_KJNrd2Ws-F_B9nh2tmIWlUxUvUxa4jN4-MfJ53Mafx-9LWaz45Ufce5CPPWFAFsrdbtmliRie5CXlmVgt8-mHAkqzafYjwVffnCotyZLt4_QFgIKFu9B9oE6XA4VZUhBXpH4su-PvM--oOxKnNTN3v6ph85mCH-C1_YMy4_eQInFvK9zCNFeaJKNBQ23M9E3BEmfqKjnScRBbCLR8UKKnosbEiDaJq7TyohKPX7HlmpnGHznRf9P_gP2izKlSePQSAb9fM4TYWa6gGb7IkA-xTlvzqgkaNHTw&lib=MEfBKtnFjLX4et83hFaVyU0fyXhMohYri';
   static const String apiVersion = 'v1';
   
   // API Endpoints
