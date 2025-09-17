@@ -1,6 +1,6 @@
 class AppConstants {
   // API Configuration
-  static const String baseUrl = 'https://script.google.com/macros/s/AKfycbyUvCgMa3qL2yEjf7OH6YGN2LvKgfsuh4qaBSGtePjPSYYoIIoYMqmiiPCKZ-dh5J7G/exec';
+  static const String baseUrl = 'AKfycbxZjvXGnD1I3szq63qoMY8QmBPVrPGUKilePo4kcmfEgUKyOcB-5mk--U2kvS9VsodS';
   static const String apiVersion = 'v1';
   
   // API Endpoints

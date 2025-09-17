@@ -1,7 +1,7 @@
     // Google Apps Script for Warehouse Inventory Management
     // Replace the spreadsheet ID with your actual Google Sheets ID
 
-    const SPREADSHEET_ID = 'YOUR_SPREADSHEET_ID_HERE'; // IMPORTANT: Replace with your actual Google Sheets ID
+    const SPREADSHEET_ID = '10M3m0dQpfwdBp9zrOsFkyFi-IDnf_vMbGErAUyiqrRg'; // IMPORTANT: Replace with your actual Google Sheets ID
     const ITEMS_SHEET = 'Items';
     const ACTIVITIES_SHEET = 'Activities';
     const SYSTEM_STATS_SHEET = 'System_Stats';
@@ -13,7 +13,7 @@ function doGet(e) {
     e = { parameter: {} };
   }
   
-  // Get the full path from the URL
+  // Get the full path from the URL parameter
   const fullPath = e.parameter.path || '';
   
   // Extract the endpoint from paths like /api/items, /api/stats, etc.
@@ -21,6 +21,11 @@ function doGet(e) {
   if (fullPath.startsWith('/api/')) {
     path = fullPath.substring(5); // Remove '/api/' prefix
   }
+  
+  // Debug logging
+  console.log('Full path:', fullPath);
+  console.log('Extracted path:', path);
+  console.log('All parameters:', e.parameter);
   
   const action = e.parameter.action || '';
   
@@ -36,8 +41,21 @@ function doGet(e) {
         return handleRacksRequest();
       case 'search':
         return handleSearchRequest(e);
+      case 'test':
+        return createResponse({ 
+          message: 'API is working!',
+          received_path: fullPath,
+          extracted_path: path,
+          all_params: e.parameter,
+          timestamp: new Date().toISOString()
+        });
       default:
-        return createResponse({ error: 'Invalid endpoint. Available endpoints: items, stats, activities, racks, search' }, 404);
+        return createResponse({ 
+          error: 'Invalid endpoint. Available endpoints: items, stats, activities, racks, search, test',
+          received_path: fullPath,
+          extracted_path: path,
+          all_params: e.parameter
+        }, 404);
     }
   } catch (error) {
     return createResponse({ error: error.toString() }, 500);
@@ -51,7 +69,7 @@ function doPost(e) {
     e = { parameter: {} };
   }
   
-  // Get the full path from the URL
+  // Get the full path from the URL parameter
   const fullPath = e.parameter.path || '';
   
   // Extract the endpoint from paths like /api/items, /api/search, etc.
@@ -59,6 +77,11 @@ function doPost(e) {
   if (fullPath.startsWith('/api/')) {
     path = fullPath.substring(5); // Remove '/api/' prefix
   }
+  
+  // Debug logging
+  console.log('POST - Full path:', fullPath);
+  console.log('POST - Extracted path:', path);
+  console.log('POST - All parameters:', e.parameter);
   
   const action = e.parameter.action || '';
   
@@ -69,7 +92,12 @@ function doPost(e) {
       case 'search':
         return handleSearchRequest(e);
       default:
-        return createResponse({ error: 'Invalid endpoint. Available endpoints: items, search' }, 404);
+        return createResponse({ 
+          error: 'Invalid POST endpoint. Available endpoints: items, search',
+          received_path: fullPath,
+          extracted_path: path,
+          all_params: e.parameter
+        }, 404);
     }
   } catch (error) {
     return createResponse({ error: error.toString() }, 500);
