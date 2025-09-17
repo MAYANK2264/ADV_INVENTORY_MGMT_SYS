@@ -13,7 +13,7 @@ dependencies:
   provider: ^6.1.1
   shared_preferences: ^2.1.2  # Downgraded for compatibility
   intl: ^0.19.0
-  flutter_barcode_scanner: ^1.0.2  # Downgraded for compatibility
+  # mobile_scanner: ^3.5.6  # Removed - not needed for demo
   cached_network_image: ^3.3.0
   shimmer: ^3.0.0
   cupertino_icons: ^1.0.2
