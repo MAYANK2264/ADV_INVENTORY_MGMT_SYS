@@ -1,7 +1,7 @@
     // Google Apps Script for Warehouse Inventory Management
     // Replace the spreadsheet ID with your actual Google Sheets ID
 
-    const SPREADSHEET_ID = 'YOUR_SPREADSHEET_ID_HERE'; // Replace with your actual spreadsheet ID
+    const SPREADSHEET_ID = 'YOUR_SPREADSHEET_ID_HERE'; // IMPORTANT: Replace with your actual Google Sheets ID
     const ITEMS_SHEET = 'Items';
     const ACTIVITIES_SHEET = 'Activities';
     const SYSTEM_STATS_SHEET = 'System_Stats';
@@ -13,7 +13,15 @@ function doGet(e) {
     e = { parameter: {} };
   }
   
-  const path = e.parameter.path || '';
+  // Get the full path from the URL
+  const fullPath = e.parameter.path || '';
+  
+  // Extract the endpoint from paths like /api/items, /api/stats, etc.
+  let path = fullPath;
+  if (fullPath.startsWith('/api/')) {
+    path = fullPath.substring(5); // Remove '/api/' prefix
+  }
+  
   const action = e.parameter.action || '';
   
   try {
@@ -43,7 +51,15 @@ function doPost(e) {
     e = { parameter: {} };
   }
   
-  const path = e.parameter.path || '';
+  // Get the full path from the URL
+  const fullPath = e.parameter.path || '';
+  
+  // Extract the endpoint from paths like /api/items, /api/search, etc.
+  let path = fullPath;
+  if (fullPath.startsWith('/api/')) {
+    path = fullPath.substring(5); // Remove '/api/' prefix
+  }
+  
   const action = e.parameter.action || '';
   
   try {
