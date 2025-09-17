@@ -197,18 +197,18 @@ class ActivityFeed extends StatelessWidget {
   }
 
   Widget _buildEmptyState() {
-    return GlassmorphismContainer(
+    return const GlassmorphismContainer(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(16),
         child: Column(
           children: [
-            const Icon(
+            Icon(
               Icons.timeline_rounded,
               color: AppColors.grey,
               size: 32,
             ),
-            const SizedBox(height: 8),
-            const Text(
+            SizedBox(height: 8),
+            Text(
               'No recent activity',
               style: TextStyle(
                 color: Colors.white,
@@ -216,8 +216,8 @@ class ActivityFeed extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            const SizedBox(height: 4),
-            const Text(
+            SizedBox(height: 4),
+            Text(
               'Activities will appear here as they happen',
               style: TextStyle(
                 color: Colors.white,

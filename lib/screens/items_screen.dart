@@ -92,9 +92,9 @@ class _ItemsScreenState extends State<ItemsScreen> {
             onChanged: (value) {
               Provider.of<ItemsProvider>(context, listen: false).searchItems(value);
             },
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: 'Search items...',
-              prefixIcon: const Icon(Icons.search_rounded, color: AppColors.primary),
+              prefixIcon: Icon(Icons.search_rounded, color: AppColors.primary),
             ),
           ),
           const SizedBox(height: 12),
@@ -115,7 +115,7 @@ class _ItemsScreenState extends State<ItemsScreen> {
     return Consumer<ItemsProvider>(
       builder: (context, itemsProvider, child) {
         return DropdownButtonFormField<String>(
-          value: itemsProvider.selectedCategory.isEmpty ? null : itemsProvider.selectedCategory,
+          initialValue: itemsProvider.selectedCategory.isEmpty ? null : itemsProvider.selectedCategory,
           decoration: const InputDecoration(
             labelText: 'Category',
             prefixIcon: Icon(Icons.category_rounded, color: AppColors.primary),
@@ -154,7 +154,7 @@ class _ItemsScreenState extends State<ItemsScreen> {
     return Consumer<ItemsProvider>(
       builder: (context, itemsProvider, child) {
         return DropdownButtonFormField<String>(
-          value: itemsProvider.selectedBlock.isEmpty ? null : itemsProvider.selectedBlock,
+          initialValue: itemsProvider.selectedBlock.isEmpty ? null : itemsProvider.selectedBlock,
           decoration: const InputDecoration(
             labelText: 'Block',
             prefixIcon: Icon(Icons.warehouse_rounded, color: AppColors.primary),
@@ -186,7 +186,7 @@ class _ItemsScreenState extends State<ItemsScreen> {
         children: [
           Expanded(
             child: DropdownButtonFormField<String>(
-              value: _sortBy,
+              initialValue: _sortBy,
               decoration: const InputDecoration(
                 labelText: 'Sort by',
                 prefixIcon: Icon(Icons.sort_rounded, color: AppColors.primary),
@@ -269,13 +269,17 @@ class _ItemsScreenState extends State<ItemsScreen> {
   }
 
   Widget _buildGridView(List items) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final crossAxisCount = screenWidth > 600 ? 4 : 2;
+    final childAspectRatio = screenWidth > 600 ? 1.0 : 0.8;
+
     return GridView.builder(
       padding: const EdgeInsets.all(AppConstants.defaultPadding),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: crossAxisCount,
         crossAxisSpacing: 12,
         mainAxisSpacing: 12,
-        childAspectRatio: 0.8,
+        childAspectRatio: childAspectRatio,
       ),
       itemCount: items.length,
       itemBuilder: (context, index) {

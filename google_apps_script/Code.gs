@@ -1,3 +1,4 @@
+
       // Google Apps Script for Warehouse Inventory Management
       // Replace the spreadsheet ID with your actual Google Sheets ID
 
@@ -106,47 +107,37 @@ function doGet(e) {
 }
 
   // Main entry point for POST requests
-  function doPost(e) {
-    // Handle case where e is undefined
-    if (!e) {
-      e = { parameter: {} };
-    }
-    
-    // Get the full path from the URL parameter
-    const fullPath = e.parameter.path || '';
-    
-    // Extract the endpoint from paths like /api/items, /api/search, etc.
-    let path = fullPath;
-    if (fullPath.startsWith('/api/')) {
-      path = fullPath.substring(5); // Remove '/api/' prefix
-    }
-    
-    // Debug logging
-    console.log('POST - Full path:', fullPath);
-    console.log('POST - Extracted path:', path);
-    console.log('POST - All parameters:', e.parameter);
-    
-    const action = e.parameter.action || '';
-    
-    try {
-      switch (path) {
-        case 'items':
-          return handleItemsRequest(e, action);
-        case 'search':
-          return handleSearchRequest(e);
-        default:
-          return createResponse({ 
-            error: 'Invalid POST endpoint. Available endpoints: items, search',
-            received_path: fullPath,
-            extracted_path: path,
-            all_params: e.parameter
-          }, 404);
-      }
-    } catch (error) {
-      return createResponse({ error: error.toString() }, 500);
-    }
+function doPost(e) {
+  // Handle case where e is undefined
+  if (!e) {
+    e = { parameter: {} };
   }
 
+  // Use the new endpoint parameter for routing
+  const endpoint = (e.parameter.endpoint || '').toString().trim();
+
+  console.log('POST - Endpoint:', endpoint);
+  console.log('POST - All parameters:', e.parameter);
+
+  const action = e.parameter.action || '';
+
+  try {
+    switch (endpoint) {
+      case 'items':
+        return handleItemsRequest(e, action);
+      case 'search':
+        return handleSearchRequest(e);
+      default:
+        return createResponse({ 
+          error: 'Invalid POST endpoint. Available endpoints: items, search',
+          received_endpoint: endpoint,
+          all_params: e.parameter
+        }, 404);
+    }
+  } catch (error) {
+    return createResponse({ error: error.toString() }, 500);
+  }
+}
       // Handle items-related requests
       function handleItemsRequest(e, action) {
       const method = e.parameter.method || 'GET';

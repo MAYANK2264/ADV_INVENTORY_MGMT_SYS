@@ -146,7 +146,7 @@ class _WarehouseMapScreenState extends State<WarehouseMapScreen> {
 
   Widget _buildCategoryFilter() {
     return DropdownButtonFormField<String>(
-      value: _selectedCategory.isEmpty ? null : _selectedCategory,
+      initialValue: _selectedCategory.isEmpty ? null : _selectedCategory,
       decoration: const InputDecoration(
         labelText: 'Category',
         prefixIcon: Icon(Icons.category_rounded, color: AppColors.primary),
@@ -184,7 +184,7 @@ class _WarehouseMapScreenState extends State<WarehouseMapScreen> {
 
   Widget _buildBlockFilter() {
     return DropdownButtonFormField<String>(
-      value: _selectedBlock.isEmpty ? null : _selectedBlock,
+      initialValue: _selectedBlock.isEmpty ? null : _selectedBlock,
       decoration: const InputDecoration(
         labelText: 'Block',
         prefixIcon: Icon(Icons.warehouse_rounded, color: AppColors.primary),

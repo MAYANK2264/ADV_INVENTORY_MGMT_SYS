@@ -8,7 +8,6 @@ import '../widgets/stats_card.dart';
 import '../widgets/warehouse_blocks_overview.dart';
 import '../widgets/activity_feed.dart';
 import '../utils/colors.dart';
-import '../utils/theme.dart';
 import '../utils/constants.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -247,7 +246,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _buildErrorCard(String error) {
-    return GlassmorphismContainer(
+    return Card(
+      color: AppColors.surface.withOpacity(0.5),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -280,7 +280,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _buildNoDataCard() {
-    return GlassmorphismContainer(
+    return Card(
+      color: AppColors.surface.withOpacity(0.5),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -307,13 +308,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _buildWarehouseOverview() {
-    return SliverToBoxAdapter(
+    return const SliverToBoxAdapter(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppConstants.defaultPadding),
+        padding: EdgeInsets.symmetric(horizontal: AppConstants.defaultPadding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'Warehouse Overview',
               style: TextStyle(
                 fontSize: 24,
@@ -321,8 +322,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 color: Colors.white,
               ),
             ),
-            const SizedBox(height: 16),
-            const WarehouseBlocksOverview(),
+            SizedBox(height: 16),
+            WarehouseBlocksOverview(),
           ],
         ),
       ),

@@ -73,7 +73,7 @@ class WarehouseMapWidget extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 12),
                 child: _buildRackSection(block, rack, itemsProvider, statsProvider),
               );
-            }).toList(),
+            }),
           ],
         ),
       ),

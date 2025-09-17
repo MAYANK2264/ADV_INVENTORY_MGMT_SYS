@@ -21,7 +21,7 @@ class ApiService {
   Future<List<Item>> getItems() async {
     try {
       final response = await http.get(
-        Uri.parse('$_baseUrl&path=${AppConstants.itemsEndpoint}'),
+        Uri.parse('$_baseUrl&endpoint=${AppConstants.itemsEndpoint}'),
         headers: _headers,
       );
 
@@ -39,7 +39,7 @@ class ApiService {
   Future<Item?> getItem(String id) async {
     try {
       final response = await http.get(
-        Uri.parse('$_baseUrl&path=${AppConstants.itemsEndpoint}&id=$id'),
+        Uri.parse('$_baseUrl&endpoint=${AppConstants.itemsEndpoint}&id=$id'),
         headers: _headers,
       );
 
@@ -59,7 +59,7 @@ class ApiService {
   Future<Item> createItem(Item item) async {
     try {
       final response = await http.post(
-        Uri.parse('$_baseUrl&path=${AppConstants.itemsEndpoint}&action=create'),
+        Uri.parse('$_baseUrl&endpoint=${AppConstants.itemsEndpoint}&action=create'),
         headers: _headers,
         body: json.encode(item.toJson()),
       );
@@ -78,7 +78,7 @@ class ApiService {
   Future<Item> updateItem(String id, Item item) async {
     try {
       final response = await http.post(
-        Uri.parse('$_baseUrl&path=${AppConstants.itemsEndpoint}&action=update&id=$id'),
+        Uri.parse('$_baseUrl&endpoint=${AppConstants.itemsEndpoint}&action=update&id=$id'),
         headers: _headers,
         body: json.encode(item.toJson()),
       );
@@ -97,7 +97,7 @@ class ApiService {
   Future<void> deleteItem(String id) async {
     try {
       final response = await http.post(
-        Uri.parse('$_baseUrl&path=${AppConstants.itemsEndpoint}&action=delete&id=$id'),
+        Uri.parse('$_baseUrl&endpoint=${AppConstants.itemsEndpoint}&action=delete&id=$id'),
         headers: _headers,
       );
 
@@ -113,7 +113,7 @@ class ApiService {
   Future<SystemStats> getSystemStats() async {
     try {
       final response = await http.get(
-        Uri.parse('$_baseUrl&path=${AppConstants.statsEndpoint}'),
+        Uri.parse('$_baseUrl&endpoint=${AppConstants.statsEndpoint}'),
         headers: _headers,
       );
 
@@ -132,7 +132,7 @@ class ApiService {
   Future<List<Activity>> getActivities() async {
     try {
       final response = await http.get(
-        Uri.parse('$_baseUrl&path=${AppConstants.activitiesEndpoint}'),
+        Uri.parse('$_baseUrl&endpoint=${AppConstants.activitiesEndpoint}'),
         headers: _headers,
       );
 
@@ -151,7 +151,7 @@ class ApiService {
   Future<Map<String, dynamic>> getRackOccupancy() async {
     try {
       final response = await http.get(
-        Uri.parse('$_baseUrl&path=${AppConstants.racksEndpoint}'),
+        Uri.parse('$_baseUrl&endpoint=${AppConstants.racksEndpoint}'),
         headers: _headers,
       );
 
@@ -169,7 +169,7 @@ class ApiService {
   Future<List<Item>> searchItems(String query) async {
     try {
       final response = await http.post(
-        Uri.parse('$_baseUrl&path=${AppConstants.searchEndpoint}'),
+        Uri.parse('$_baseUrl&endpoint=${AppConstants.searchEndpoint}'),
         headers: _headers,
         body: json.encode({'query': query}),
       );
@@ -189,7 +189,7 @@ class ApiService {
   Future<bool> isConnected() async {
     try {
       final response = await http.get(
-        Uri.parse('$_baseUrl&path=${AppConstants.statsEndpoint}'),
+        Uri.parse('$_baseUrl&endpoint=${AppConstants.statsEndpoint}'),
         headers: _headers,
       ).timeout(const Duration(seconds: 5));
       return response.statusCode == 200;
