@@ -49,6 +49,22 @@ function doGet(e) {
           all_params: e.parameter,
           timestamp: new Date().toISOString()
         });
+      case '':
+        // Default response when no path is provided
+        return createResponse({ 
+          message: 'Warehouse Inventory API is running!',
+          available_endpoints: ['items', 'stats', 'activities', 'racks', 'search', 'test'],
+          usage: 'Add ?path=/api/endpoint to your URL',
+          examples: [
+            '?path=/api/stats',
+            '?path=/api/items',
+            '?path=/api/test'
+          ],
+          received_path: fullPath,
+          extracted_path: path,
+          all_params: e.parameter,
+          timestamp: new Date().toISOString()
+        });
       default:
         return createResponse({ 
           error: 'Invalid endpoint. Available endpoints: items, stats, activities, racks, search, test',
