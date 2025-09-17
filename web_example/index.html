@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warehouse Inventory API Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .error { color: #d32f2f; background: #ffebee; padding: 10px; border-radius: 4px; }
+        .success { color: #2e7d32; background: #e8f5e8; padding: 10px; border-radius: 4px; }
+        button { background: #1976d2; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; margin: 5px; }
+        button:hover { background: #1565c0; }
+        pre { background: #f5f5f5; padding: 10px; border-radius: 4px; overflow-x: auto; }
+        .loading { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏭 Warehouse Inventory API Test</h1>
+        
+        <div class="section">
+            <h3>Connection Test</h3>
+            <button onclick="testConnection()">Test API Connection</button>
+            <div id="connection-result"></div>
+        </div>
+
+        <div class="section">
+            <h3>Items</h3>
+            <button onclick="loadItems()">Load Items</button>
+            <div id="items-result"></div>
+        </div>
+
+        <div class="section">
+            <h3>Statistics</h3>
+            <button onclick="loadStats()">Load Stats</button>
+            <div id="stats-result"></div>
+        </div>
+
+        <div class="section">
+            <h3>Search</h3>
+            <input type="text" id="search-query" placeholder="Enter search term..." style="padding: 8px; margin-right: 10px; width: 200px;">
+            <button onclick="searchItems()">Search</button>
+            <div id="search-result"></div>
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script>
+        function showResult(elementId, content, isError = false) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="${isError ? 'error' : 'success'}">${content}</div>`;
+        }
+
+        function showLoading(elementId) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = '<div class="loading">Loading...</div>';
+        }
+
+        async function testConnection() {
+            showLoading('connection-result');
+            try {
+                const result = await API.testConnection();
+                showResult('connection-result', `✅ Connection successful!<br><pre>${JSON.stringify(result, null, 2)}</pre>`);
+            } catch (error) {
+                showResult('connection-result', `❌ Connection failed: ${error.message}`, true);
+            }
+        }
+
+        async function loadItems() {
+            showLoading('items-result');
+            try {
+                const items = await API.getItems();
+                const itemsHtml = items.map(item => 
+                    `<div style="margin: 5px 0; padding: 8px; background: #f9f9f9; border-radius: 4px;">
+                        <strong>${item.name}</strong> (${item.category}) - Qty: ${item.qty}
+                    </div>`
+                ).join('');
+                showResult('items-result', `📦 Items loaded (${items.length}):<br>${itemsHtml}`);
+            } catch (error) {
+                showResult('items-result', `❌ Failed to load items: ${error.message}`, true);
+            }
+        }
+
+        async function loadStats() {
+            showLoading('stats-result');
+            try {
+                const stats = await API.getStats();
+                const statsHtml = `
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 10px 0;">
+                        <div style="text-align: center; padding: 10px; background: #e3f2fd; border-radius: 4px;">
+                            <div style="font-size: 24px; font-weight: bold; color: #1976d2;">${stats.capacity}</div>
+                            <div>Total Capacity</div>
+                        </div>
+                        <div style="text-align: center; padding: 10px; background: #e8f5e8; border-radius: 4px;">
+                            <div style="font-size: 24px; font-weight: bold; color: #2e7d32;">${stats.occupiedSlots}</div>
+                            <div>Occupied</div>
+                        </div>
+                        <div style="text-align: center; padding: 10px; background: #fff3e0; border-radius: 4px;">
+                            <div style="font-size: 24px; font-weight: bold; color: #f57c00;">${stats.availableSlots}</div>
+                            <div>Available</div>
+                        </div>
+                    </div>
+                `;
+                showResult('stats-result', `📊 Statistics loaded:<br>${statsHtml}`);
+            } catch (error) {
+                showResult('stats-result', `❌ Failed to load stats: ${error.message}`, true);
+            }
+        }
+
+        async function searchItems() {
+            const query = document.getElementById('search-query').value.trim();
+            if (!query) {
+                showResult('search-result', 'Please enter a search term', true);
+                return;
+            }
+
+            showLoading('search-result');
+            try {
+                const results = await API.searchItems(query);
+                const resultsHtml = results.length > 0 
+                    ? results.map(item => 
+                        `<div style="margin: 5px 0; padding: 8px; background: #f9f9f9; border-radius: 4px;">
+                            <strong>${item.name}</strong> (${item.category}) - Qty: ${item.qty}
+                        </div>`
+                    ).join('')
+                    : '<div style="color: #666; font-style: italic;">No items found</div>';
+                showResult('search-result', `🔍 Search results for "${query}" (${results.length} found):<br>${resultsHtml}`);
+            } catch (error) {
+                showResult('search-result', `❌ Search failed: ${error.message}`, true);
+            }
+        }
+
+        // Auto-test connection on page load
+        window.addEventListener('load', () => {
+            testConnection();
+        });
+    </script>
+</body>
+</html>

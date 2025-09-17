@@ -8,80 +8,102 @@
 
   // Main entry point for GET requests
 function doGet(e) {
-  // Handle case where e is undefined
-  if (!e) {
-    e = { parameter: {} };
-  }
-  
-  // Get the full path from the URL parameter
+  // Ensure parameter object exists
+  if (!e) e = { parameter: {} };
+
+  // New: explicit router using ?endpoint=
+  const endpointParam = (e.parameter.endpoint || '').toString().trim().replace(/^\/+/, '');
+
+  // Back-compat: support older ?path=/api/... usage
   const fullPath = e.parameter.path || '';
-  
-  // Extract the endpoint from paths like /api/items, /api/stats, etc.
-  let path = fullPath;
+  let pathFromParam = fullPath;
   if (fullPath.startsWith('/api/')) {
-    path = fullPath.substring(5); // Remove '/api/' prefix
+    pathFromParam = fullPath.substring(5); // remove '/api/'
   }
-  
-  // Handle direct access without path parameter
-  if (!path && !fullPath) {
-    path = 'test'; // Default to test endpoint
-  }
-  
-  // Debug logging
-  console.log('Full path:', fullPath);
-  console.log('Extracted path:', path);
-  console.log('All parameters:', e.parameter);
-    
-    const action = e.parameter.action || '';
-    
-    try {
-      switch (path) {
-        case 'items':
-          return handleItemsRequest(e, action);
-        case 'stats':
-          return handleStatsRequest();
-        case 'activities':
-          return handleActivitiesRequest();
-        case 'racks':
-          return handleRacksRequest();
-        case 'search':
-          return handleSearchRequest(e);
-        case 'test':
-          return createResponse({ 
-            message: 'API is working!',
-            received_path: fullPath,
-            extracted_path: path,
-            all_params: e.parameter,
-            timestamp: new Date().toISOString()
-          });
-        case '':
-          // Default response when no path is provided
-          return createResponse({ 
-            message: 'Warehouse Inventory API is running!',
-            available_endpoints: ['items', 'stats', 'activities', 'racks', 'search', 'test'],
-            usage: 'Add ?path=/api/endpoint to your URL',
-            examples: [
-              '?path=/api/stats',
-              '?path=/api/items',
-              '?path=/api/test'
-            ],
-            received_path: fullPath,
-            extracted_path: path,
-            all_params: e.parameter,
-            timestamp: new Date().toISOString()
-          });
-        default:
-          return createResponse({ 
-            error: 'Invalid endpoint. Available endpoints: items, stats, activities, racks, search, test',
-            received_path: fullPath,
-            extracted_path: path,
-            all_params: e.parameter
-          }, 404);
+
+  // Decide active endpoint
+  const endpoint = endpointParam || pathFromParam || '';
+
+  // Default when nothing specified
+  const effectiveEndpoint = endpoint || 'test';
+
+  // Debug
+  console.log('endpointParam:', endpointParam);
+  console.log('fullPath:', fullPath);
+  console.log('resolved endpoint:', effectiveEndpoint);
+  console.log('params:', e.parameter);
+
+  // Simple JSON helper
+  const json = (obj, code) => {
+    const out = ContentService.createTextOutput(JSON.stringify(obj, null, 2))
+      .setMimeType(ContentService.MimeType.JSON);
+    if (code && out.setStatusCode) out.setStatusCode(code);
+    return out;
+  };
+
+  // Dummy/sample data for reliability
+  const sampleItems = [
+    { id: '1', name: 'PS5 Console', category: 'Electronics', qty: 12 },
+    { id: '2', name: 'Arduino Kit', category: 'Electronics', qty: 30 },
+    { id: '3', name: 'Hydraulic Pump', category: 'Industrial', qty: 5 }
+  ];
+  const sampleStats = {
+    capacity: 120,
+    occupiedSlots: 25,
+    availableSlots: 95,
+    uptime: 0.999,
+    lastUpdated: new Date().toISOString()
+  };
+  const sampleActivities = [
+    { id: 'a1', type: 'IN', itemId: '1', qty: 5, at: new Date().toISOString() },
+    { id: 'a2', type: 'OUT', itemId: '2', qty: 2, at: new Date().toISOString() }
+  ];
+  const sampleRacks = {
+    blocks: ['A', 'B', 'C', 'D', 'E'],
+    racksPerBlock: 3,
+    slotsPerRack: 8
+  };
+
+  try {
+    switch (effectiveEndpoint) {
+      case 'items':
+        // filter for /search uses dedicated case below
+        return json(sampleItems);
+      case 'stats':
+        return json(sampleStats);
+      case 'activities':
+        return json(sampleActivities);
+      case 'racks':
+        return json(sampleRacks);
+      case 'search': {
+        const q = (e.parameter.q || '').toString().toLowerCase();
+        const filtered = !q
+          ? sampleItems
+          : sampleItems.filter(it =>
+              (it.name || '').toLowerCase().includes(q) ||
+              (it.category || '').toLowerCase().includes(q)
+            );
+        return json(filtered);
       }
-    } catch (error) {
-      return createResponse({ error: error.toString() }, 500);
+      case 'test':
+        return json({ status: 'ok', timestamp: new Date().toISOString() });
+      case '':
+        return json({
+          message: 'Warehouse Inventory API (Apps Script) is running',
+          usage: 'Add ?endpoint=items|stats|activities|racks|search|test',
+          examples: [
+            '?endpoint=stats',
+            '?endpoint=items',
+            '?endpoint=search&q=ps5'
+          ]
+        });
+      default:
+        return json({ error: 'Invalid endpoint' }, 404);
     }
+  } catch (err) {
+    return json({ error: err && err.message ? err.message : String(err) }, 500);
   }
+}
 
   // Main entry point for POST requests
   function doPost(e) {
