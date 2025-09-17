@@ -24,8 +24,8 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.example.warehouse_inventory"
-    compileSdk flutter.compileSdkVersion
-    ndkVersion flutter.ndkVersion
+    compileSdk 33
+    ndkVersion "25.1.8937393"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -42,26 +42,23 @@ android {
 
     defaultConfig {
         applicationId "com.example.warehouse_inventory"
-        minSdkVersion 21 // Required for flutter_barcode_scanner
-        targetSdkVersion flutter.targetSdkVersion
+        minSdkVersion 21
+        targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
 
     buildTypes {
         release {
-            signingConfig signingConfigs.debug // Using debug for GitHub Actions
+            signingConfig signingConfigs.debug
             minifyEnabled false
             shrinkResources false
-            // Disabled minification and shrinking to fix build issues
-            // proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
             signingConfig signingConfigs.debug
         }
     }
     
-    // Ensure APKs are generated in the expected location
     applicationVariants.all { variant ->
         variant.outputs.all {
             outputFileName = "app-${variant.buildType.name}.apk"
@@ -78,4 +75,6 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+}

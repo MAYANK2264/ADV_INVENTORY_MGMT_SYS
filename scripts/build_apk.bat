@@ -15,24 +15,43 @@ REM Check Flutter version
 echo 📱 Flutter version:
 flutter --version
 
-REM Clean previous builds
-echo 🧹 Cleaning previous builds...
+REM Clean everything thoroughly
+echo 🧹 Cleaning previous builds and caches...
 flutter clean
+cd android
+call gradlew clean
+cd ..
+
+REM Remove build directories
+if exist "build" rmdir /s /q "build"
+if exist "android\build" rmdir /s /q "android\build"
+if exist "android\app\build" rmdir /s /q "android\app\build"
 
 REM Get dependencies
 echo 📦 Getting dependencies...
 flutter pub get
 
-REM Build release APK
+REM Pre-build checks
+echo  Running pre-build checks...
+flutter doctor
+flutter analyze
+
+REM Build release APK with verbose output
 echo 🔨 Building release APK...
-flutter build apk --release
+flutter build apk --release --verbose
 
 if %ERRORLEVEL% NEQ 0 (
     echo ❌ Release build failed
     echo 🔧 Trying debug build...
-    flutter build apk --debug
+    flutter build apk --debug --verbose
     if %ERRORLEVEL% NEQ 0 (
         echo ❌ Both builds failed
+        echo.
+        echo 🔍 Troubleshooting steps:
+        echo 1. Check Flutter doctor output above
+        echo 2. Ensure Android SDK is properly installed
+        echo 3. Check if all dependencies are compatible
+        echo 4. Try running: flutter clean && flutter pub get
         pause
         exit /b 1
     )
@@ -44,8 +63,17 @@ echo ✅ Build completed successfully!
 echo ==================================================
 echo 📁 APK files location: build/app/outputs/flutter-apk/
 echo.
-echo 📱 Available APKs:
-dir /b "build\app\outputs\flutter-apk\*.apk"
-echo.
-echo 🎉 APK ready for distribution!
+
+REM Check if APK files exist
+if exist "build\app\outputs\flutter-apk\*.apk" (
+    echo  Available APKs:
+    dir /b "build\app\outputs\flutter-apk\*.apk"
+    echo.
+    echo  APK ready for distribution!
+) else (
+    echo ❌ No APK files found in expected location
+    echo 📁 Checking all build outputs...
+    dir /s /b "build\app\outputs\*.apk"
+)
+
 pause
