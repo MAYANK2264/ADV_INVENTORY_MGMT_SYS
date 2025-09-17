@@ -1,0 +1,46 @@
+name: Build Web App - Simple
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Web App
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.16.9'
+        channel: 'stable'
+        cache: true
+    
+    - name: Install dependencies
+      run: flutter pub get
+      
+    - name: Show Flutter version
+      run: flutter --version
+    
+    - name: Build Web App
+      run: |
+        flutter clean
+        flutter build web --release
+        echo "Web build completed successfully!"
+        ls -la build/web/
+    
+    - name: Upload Web Build
+      uses: actions/upload-artifact@v4
+      with:
+        name: warehouse-inventory-web
+        path: build/web/
+        retention-days: 30
+    
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./build/web
