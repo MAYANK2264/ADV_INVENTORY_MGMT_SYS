@@ -203,7 +203,7 @@ class _AddItemDialogState extends State<AddItemDialog> {
             const SizedBox(width: 12),
             Expanded(
               child: DropdownButtonFormField<String>(
-                initialValue: _selectedCategory,
+                value: _selectedCategory,
                 decoration: const InputDecoration(
                   labelText: 'Category',
                   prefixIcon: Icon(Icons.category_rounded, color: AppColors.primary),
@@ -258,7 +258,7 @@ class _AddItemDialogState extends State<AddItemDialog> {
             const SizedBox(width: 12),
             Expanded(
               child: DropdownButtonFormField<String>(
-                initialValue: _selectedSize,
+                value: _selectedSize,
                 decoration: const InputDecoration(
                   labelText: 'Size',
                   prefixIcon: Icon(Icons.straighten_rounded, color: AppColors.primary),
@@ -299,7 +299,7 @@ class _AddItemDialogState extends State<AddItemDialog> {
           children: [
             Expanded(
               child: DropdownButtonFormField<String>(
-                initialValue: _selectedBlock,
+                value: _selectedBlock,
                 decoration: const InputDecoration(
                   labelText: 'Block',
                   prefixIcon: Icon(Icons.warehouse_rounded, color: AppColors.primary),
@@ -320,7 +320,7 @@ class _AddItemDialogState extends State<AddItemDialog> {
             const SizedBox(width: 12),
             Expanded(
               child: DropdownButtonFormField<String>(
-                initialValue: _selectedRack,
+                value: _selectedRack,
                 decoration: const InputDecoration(
                   labelText: 'Rack',
                   prefixIcon: Icon(Icons.view_module_rounded, color: AppColors.primary),
@@ -341,7 +341,7 @@ class _AddItemDialogState extends State<AddItemDialog> {
             const SizedBox(width: 12),
             Expanded(
               child: DropdownButtonFormField<int>(
-                initialValue: _selectedSlot,
+                value: _selectedSlot,
                 decoration: const InputDecoration(
                   labelText: 'Slot',
                   prefixIcon: Icon(Icons.grid_view_rounded, color: AppColors.primary),
@@ -363,7 +363,7 @@ class _AddItemDialogState extends State<AddItemDialog> {
         ),
         const SizedBox(height: 16),
         DropdownButtonFormField<String>(
-          initialValue: _selectedStatus,
+          value: _selectedStatus,
           decoration: const InputDecoration(
             labelText: 'Status',
             prefixIcon: Icon(Icons.info_rounded, color: AppColors.primary),

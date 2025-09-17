@@ -115,7 +115,7 @@ class _ItemsScreenState extends State<ItemsScreen> {
     return Consumer<ItemsProvider>(
       builder: (context, itemsProvider, child) {
         return DropdownButtonFormField<String>(
-          initialValue: itemsProvider.selectedCategory.isEmpty ? null : itemsProvider.selectedCategory,
+          value: itemsProvider.selectedCategory.isEmpty ? null : itemsProvider.selectedCategory,
           decoration: const InputDecoration(
             labelText: 'Category',
             prefixIcon: Icon(Icons.category_rounded, color: AppColors.primary),
@@ -154,7 +154,7 @@ class _ItemsScreenState extends State<ItemsScreen> {
     return Consumer<ItemsProvider>(
       builder: (context, itemsProvider, child) {
         return DropdownButtonFormField<String>(
-          initialValue: itemsProvider.selectedBlock.isEmpty ? null : itemsProvider.selectedBlock,
+          value: itemsProvider.selectedBlock.isEmpty ? null : itemsProvider.selectedBlock,
           decoration: const InputDecoration(
             labelText: 'Block',
             prefixIcon: Icon(Icons.warehouse_rounded, color: AppColors.primary),
@@ -186,7 +186,7 @@ class _ItemsScreenState extends State<ItemsScreen> {
         children: [
           Expanded(
             child: DropdownButtonFormField<String>(
-              initialValue: _sortBy,
+              value: _sortBy,
               decoration: const InputDecoration(
                 labelText: 'Sort by',
                 prefixIcon: Icon(Icons.sort_rounded, color: AppColors.primary),
