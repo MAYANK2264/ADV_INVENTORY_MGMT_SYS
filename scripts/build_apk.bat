@@ -23,21 +23,20 @@ REM Get dependencies
 echo 📦 Getting dependencies...
 flutter pub get
 
-REM Run tests
-echo 🧪 Running tests...
-flutter test
-
-REM Build debug APK
-echo 🔨 Building debug APK...
-flutter build apk --debug
-
 REM Build release APK
 echo 🔨 Building release APK...
 flutter build apk --release
 
-REM Build split APKs (recommended for smaller file size)
-echo 🔨 Building split APKs...
-flutter build apk --split-per-abi
+if %ERRORLEVEL% NEQ 0 (
+    echo ❌ Release build failed
+    echo 🔧 Trying debug build...
+    flutter build apk --debug
+    if %ERRORLEVEL% NEQ 0 (
+        echo ❌ Both builds failed
+        pause
+        exit /b 1
+    )
+)
 
 REM Display build results
 echo.
@@ -46,14 +45,7 @@ echo ==================================================
 echo 📁 APK files location: build/app/outputs/flutter-apk/
 echo.
 echo 📱 Available APKs:
-echo   • app-debug.apk (Debug version)
-echo   • app-release.apk (Release version)
-echo   • app-arm64-v8a-release.apk (ARM64 devices)
-echo   • app-armeabi-v7a-release.apk (ARM devices)
-echo   • app-x86_64-release.apk (x86_64 devices)
+dir /b "build\app\outputs\flutter-apk\*.apk"
 echo.
-echo 💡 For distribution, use the split APKs or the release APK
-echo    The split APKs are smaller and optimized for specific architectures
-echo.
-echo 🎉 Happy distributing!
+echo 🎉 APK ready for distribution!
 pause

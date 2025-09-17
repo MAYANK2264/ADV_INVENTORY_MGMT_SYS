@@ -27,9 +27,13 @@ class StatsProvider with ChangeNotifier {
     notifyListeners();
 
     // Load demo data immediately for demo purposes
-    print('Loading demo stats...');
+    if (kDebugMode) {
+      print('Loading demo stats...');
+    }
     _loadDemoStats();
-    print('Demo stats loaded: ${_stats?.totalItems} items, ${_rackOccupancy.length} blocks');
+    if (kDebugMode) {
+      print('Demo stats loaded: ${_stats?.totalItems} items, ${_rackOccupancy.length} blocks');
+    }
     _isLoading = false;
     notifyListeners();
     return;

@@ -38,9 +38,13 @@ class ActivitiesProvider with ChangeNotifier {
     notifyListeners();
 
     // Load demo data immediately for demo purposes
-    print('Loading demo activities...');
+    if (kDebugMode) {
+      print('Loading demo activities...');
+    }
     _loadDemoActivities();
-    print('Demo activities loaded: ${_activities.length} activities');
+    if (kDebugMode) {
+      print('Demo activities loaded: ${_activities.length} activities');
+    }
     _isLoading = false;
     notifyListeners();
     return;
